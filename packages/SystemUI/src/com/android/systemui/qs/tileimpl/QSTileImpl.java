@@ -38,6 +38,10 @@ import android.metrics.LogMaker;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.UserHandle;
+import android.os.Vibrator;
+import android.os.VibrationEffect;
+import android.provider.Settings;
 import android.text.format.DateUtils;
 import android.util.ArraySet;
 import android.util.Log;
@@ -154,6 +158,8 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
      */
     abstract protected void handleUpdateState(TState state, Object arg);
 
+    protected Vibrator mVibrator;
+
     /**
      * Declare the category of this tile.
      *
@@ -202,6 +208,7 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
 
         resetStates();
         mUiHandler.post(() -> mLifecycle.setCurrentState(CREATED));
+        mVibrator = mContext.getSystemService(Vibrator.class);
     }
 
     protected final void resetStates() {
@@ -280,6 +287,18 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
 
     // safe to call from any thread
 
+    public boolean isVibrationEnabled() {
+        return (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.QUICK_SETTINGS_TILES_VIBRATE, 0, UserHandle.USER_CURRENT) == 1);
+    }
+
+    public void vibrateTile() {
+        if (!isVibrationEnabled()) { return; }
+        if (mVibrator != null) {
+            if (mVibrator.hasVibrator()) { mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK)); }
+        }
+    }
+
     public void addCallback(Callback callback) {
         mHandler.obtainMessage(H.ADD_CALLBACK, callback).sendToTarget();
     }
@@ -304,6 +323,7 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
         if (!mFalsingManager.isFalseTap(FalsingManager.LOW_PENALTY)) {
             mHandler.obtainMessage(H.CLICK, eventId, 0, view).sendToTarget();
         }
+        vibrateTile();
     }
 
     public void secondaryClick(@Nullable View view) {
@@ -329,6 +349,7 @@ public abstract class QSTileImpl<TState extends State> implements QSTile, Lifecy
         mQSLogger.logTileLongClick(mTileSpec, mStatusBarStateController.getState(), mState.state,
                 eventId);
         mHandler.obtainMessage(H.LONG_CLICK, eventId, 0, view).sendToTarget();
+        vibrateTile();
     }
 
     public LogMaker populate(LogMaker logMaker) {
