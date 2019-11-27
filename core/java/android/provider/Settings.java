@@ -6082,6 +6082,12 @@ public final class Settings {
         };
 
         /**
+         * Old style mobile data indicator
+         * @hide
+         */
+        public static final String USE_OLD_MOBILETYPE = "use_old_mobiletype";
+
+        /**
          * Force full screen for devices with cutout
          * @hide
          */
