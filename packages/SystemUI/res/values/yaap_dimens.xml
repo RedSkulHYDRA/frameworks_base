@@ -38,7 +38,14 @@
          AOSP default is 1533 -->
     <item name="auth_ripple_animation_duration" format="float" type="dimen">1533</item>
 
-   <!-- The height of the WiFi toggle layout in Internet panel -->
+    <!-- The height of the WiFi toggle layout in Internet panel -->
     <dimen name="internet_dialog_wifi_toggle_height">56dp</dimen>
+
+    <!-- Old style mobile data indicators -->
+    <dimen name="status_bar_mobile_signal_with_type_height">18dp</dimen>
+    <dimen name="status_bar_mobile_signal_with_type_width">18dp</dimen>
+    <dimen name="status_bar_mobile_signal_width">16dp</dimen>
+    <dimen name="status_bar_mobile_type_height">9dp</dimen>
+    <dimen name="status_bar_mobile_type_width">12dp</dimen>
 
 </resources>
