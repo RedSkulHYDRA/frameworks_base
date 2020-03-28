@@ -449,5 +449,6 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.DOZE_PICK_UP_GESTURE_VIBRATE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS_STORE, new DiscreteValueValidator(new String[] {"-1", "0", "1", "2"}));
+        VALIDATORS.put(Secure.FACE_UNLOCK_METHOD, BOOLEAN_VALIDATOR);
     }
 }
