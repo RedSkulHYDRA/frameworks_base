@@ -186,6 +186,7 @@ public class ScreenshotController {
      */
     static class SavedImageData {
         public Uri uri;
+        public Supplier<ActionTransition> viewTransition;
         public Supplier<ActionTransition> shareTransition;
         public Supplier<ActionTransition> editTransition;
         public Notification.Action deleteAction;
@@ -254,6 +255,7 @@ public class ScreenshotController {
     // ScreenshotNotificationSmartActionsProvider.
     static final String EXTRA_ACTION_TYPE = "android:screenshot_action_type";
     static final String EXTRA_ID = "android:screenshot_id";
+    static final String ACTION_TYPE_VIEW = "View";
     static final String ACTION_TYPE_DELETE = "Delete";
     static final String ACTION_TYPE_LENS = "Lens";
     static final String ACTION_TYPE_SHARE = "Share";
@@ -310,6 +312,8 @@ public class ScreenshotController {
         }
         respondToBack();
     };
+
+    private final FullScreenshotRunnable mFullScreenshotRunnable = new FullScreenshotRunnable();
 
     private ScreenshotView mScreenshotView;
     private final MessageContainerController mMessageContainerController;
@@ -595,6 +599,20 @@ public class ScreenshotController {
     void takeScreenshotFullscreen(ComponentName topComponent, Consumer<Uri> finisher,
             RequestCallback requestCallback) {
         Assert.isMainThread();
+        mScreenshotHandler.removeCallbacks(mFullScreenshotRunnable);
+        /**
+         * Do not let it run the finish callback, it'll reset the service
+         * connection and break the next screenshot.
+         */
+        mCurrentRequestCallback = null;
+        dismissScreenshot(SCREENSHOT_DISMISSED_OTHER);
+        mFullScreenshotRunnable.setArgs(topComponent, finisher, requestCallback);
+        // Wait 50ms to make sure we are on new frame.
+        mScreenshotHandler.postDelayed(mFullScreenshotRunnable, 50);
+    }
+
+    void takeScreenshotFullscreenInternal(ComponentName topComponent, Consumer<Uri> finisher,
+            RequestCallback requestCallback) {
         mCurrentRequestCallback = requestCallback;
         takeScreenshotInternal(topComponent, finisher, getFullScreenRect());
     }
@@ -622,6 +640,17 @@ public class ScreenshotController {
         mCurrentRequestCallback = requestCallback;
         saveScreenshot(screenshot, finisher, screenshotScreenBounds, visibleInsets, topComponent,
                 showFlash, UserHandle.of(userId));
+    }
+
+    /**
+     * Displays a screenshot selector
+     */
+    @MainThread
+    void takeScreenshotPartial(ComponentName topComponent,
+            final Consumer<Uri> finisher, RequestCallback requestCallback) {
+        Assert.isMainThread();
+        startPartialScreenshotActivity(Process.myUserHandle());
+        finisher.accept(null);
     }
 
     /**
@@ -792,6 +821,13 @@ public class ScreenshotController {
                 ClipboardOverlayController.SELF_PERMISSION);
     }
 
+    private Bitmap captureScreenshot() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getDefaultDisplay().getRealMetrics(displayMetrics);
+        return mImageCapture.captureDisplay(mDisplayTracker.getDefaultDisplayId(),
+                new Rect(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels));
+    }
+
     private void saveScreenshot(Bitmap screenshot, Consumer<Uri> finisher, Rect screenRect,
             Insets screenInsets, ComponentName topComponent, boolean showFlash, UserHandle owner) {
         withWindowAttached(() -> {
@@ -936,6 +972,49 @@ public class ScreenshotController {
                 onScrollCaptureResponseReady(future, owner), mMainExecutor);
     }
 
+    public void startLongScreenshotActivity(ScrollCaptureController.LongScreenshot longScreenshot,
+            UserHandle owner) {
+        mLongScreenshotHolder.setForegroundAppName(getForegroundAppLabel());
+        mLongScreenshotHolder.setLongScreenshot(longScreenshot);
+        mLongScreenshotHolder.setTransitionDestinationCallback(
+                (transitionDestination, onTransitionEnd) -> {
+                        mScreenshotView.startLongScreenshotTransition(
+                                transitionDestination, onTransitionEnd,
+                                longScreenshot);
+                    // TODO: Do this via ActionIntentExecutor instead.
+                    mContext.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                }
+        );
+
+        final Intent intent = new Intent(mContext, LongScreenshotActivity.class);
+        intent.putExtra(LongScreenshotActivity.EXTRA_SCREENSHOT_USER_HANDLE,
+                owner);
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        mContext.startActivity(intent,
+                ActivityOptions.makeCustomAnimation(mContext, 0, 0).toBundle());
+        RemoteAnimationAdapter runner = new RemoteAnimationAdapter(
+                SCREENSHOT_REMOTE_RUNNER, 0, 0);
+        try {
+            WindowManagerGlobal.getWindowManagerService()
+                    .overridePendingAppTransitionRemote(runner,
+                            mDisplayTracker.getDefaultDisplayId());
+        } catch (Exception e) {
+            Log.e(TAG, "Error overriding screenshot app transition", e);
+        }
+    }
+
+    private void startPartialScreenshotActivity(UserHandle owner) {
+        Bitmap newScreenshot = captureScreenshot();
+
+        ScrollCaptureController.BitmapScreenshot bitmapScreenshot =
+            new ScrollCaptureController.BitmapScreenshot(mContext, newScreenshot);
+
+        mLongScreenshotHolder.setNeedsMagnification(false);
+        startLongScreenshotActivity(bitmapScreenshot, owner);
+    }
+
     private void onScrollCaptureResponseReady(Future<ScrollCaptureResponse> responseFuture,
             UserHandle owner) {
         try {
@@ -1002,36 +1081,8 @@ public class ScreenshotController {
                 mScreenshotView.restoreNonScrollingUi();
                 return;
             }
-
-            mLongScreenshotHolder.setLongScreenshot(longScreenshot);
-            mLongScreenshotHolder.setForegroundAppName(getForegroundAppLabel());
-            mLongScreenshotHolder.setTransitionDestinationCallback(
-                    (transitionDestination, onTransitionEnd) -> {
-                        mScreenshotView.startLongScreenshotTransition(
-                                transitionDestination, onTransitionEnd,
-                                longScreenshot);
-                        // TODO: Do this via ActionIntentExecutor instead.
-                        mContext.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                    }
-            );
-
-            final Intent intent = new Intent(mContext, LongScreenshotActivity.class);
-            intent.putExtra(LongScreenshotActivity.EXTRA_SCREENSHOT_USER_HANDLE,
-                    owner);
-            intent.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            mContext.startActivity(intent,
-                    ActivityOptions.makeCustomAnimation(mContext, 0, 0).toBundle());
-            RemoteAnimationAdapter runner = new RemoteAnimationAdapter(
-                    SCREENSHOT_REMOTE_RUNNER, 0, 0);
-            try {
-                WindowManagerGlobal.getWindowManagerService()
-                        .overridePendingAppTransitionRemote(runner,
-                                mDisplayTracker.getDefaultDisplayId());
-            } catch (Exception e) {
-                Log.e(TAG, "Error overriding screenshot app transition", e);
-            }
+            mLongScreenshotHolder.setNeedsMagnification(true);
+            startLongScreenshotActivity(longScreenshot, owner);
         }, mMainExecutor);
     }
 
@@ -1442,8 +1493,23 @@ public class ScreenshotController {
             };
          }
     }
+    private class FullScreenshotRunnable implements Runnable {
+        ComponentName mTopComponent;
+        Consumer<Uri> mFinisher;
+        RequestCallback mRequestCallback;
 
+        public void setArgs(ComponentName topComponent, Consumer<Uri> finisher,
+                RequestCallback requestCallback) {
+            mTopComponent = topComponent;
+            mFinisher = finisher;
+            mRequestCallback = requestCallback;
+        }
 
+        @Override
+        public void run() {
+            takeScreenshotFullscreenInternal(mTopComponent, mFinisher, mRequestCallback);
+        }
+    }
     private void playShutterSound() {
        boolean playSound = readCameraSoundForced() && mCamsInUse > 0;
         switch (mAudioManager.getRingerMode()) {
