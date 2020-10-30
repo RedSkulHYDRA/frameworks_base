@@ -208,7 +208,10 @@ import com.android.internal.policy.TransitionAnimation;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.ScreenshotHelper;
+<<<<<<< HEAD
 import com.android.internal.util.yaap.YaapUtils;
+=======
+>>>>>>> f34a2aa3c9b7 (base: Add three-fingers-swipe to screenshot [1/2])
 import com.android.server.ExtconStateObserver;
 import com.android.server.ExtconUEventObserver;
 import com.android.server.GestureLauncherService;
@@ -617,6 +620,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     boolean mHavePendingMediaKeyRepeatWithWakeLock;
 
     private int mCurrentUserId;
+    private boolean haveEnableGesture = false;
 
     private AssistUtils mAssistUtils;
 
@@ -698,6 +702,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private boolean mQuickMute;
     private boolean mUnhandledQuickMute = false;
     private int mQuickMuteDelay;
+
+    private SwipeToScreenshotListener mSwipeToScreenshot;
 
     private class PolicyHandler extends Handler {
         @Override
@@ -847,6 +853,68 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.VOLUME_BUTTON_QUICK_MUTE_DELAY), false, this,
                     UserHandle.USER_ALL);
+<<<<<<< HEAD
+=======
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_HOME_LONG_PRESS_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_HOME_DOUBLE_TAP_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.FORCE_SHOW_NAVBAR), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_MENU_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_MENU_LONG_PRESS_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_ASSIST_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_ASSIST_LONG_PRESS_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_APP_SWITCH_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.KEY_EDGE_LONG_SWIPE_ACTION), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.HOME_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.BACK_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.MENU_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.ASSIST_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.APP_SWITCH_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.VOLUME_WAKE_SCREEN), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.VOLUME_ANSWER_CALL), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SWIPE_TO_SCREENSHOT), false, this,
+                    UserHandle.USER_ALL);
+            if (mLineageHardware.isSupported(LineageHardwareManager.FEATURE_KEY_SWAP)) {
+                resolver.registerContentObserver(Settings.Secure.getUriFor(
+                        Settings.Secure.SWAP_CAPACITIVE_KEYS), false, this,
+                        UserHandle.USER_ALL);
+            }
+>>>>>>> f34a2aa3c9b7 (base: Add three-fingers-swipe to screenshot [1/2])
             updateSettings();
         }
 
@@ -2090,6 +2158,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
 
         mHandler = new PolicyHandler();
+        mSwipeToScreenshot = new SwipeToScreenshotListener(context, new SwipeToScreenshotListener.Callbacks() {
+            @Override
+            public void onSwipeThreeFinger() {
+                interceptScreenshotChord(
+                        TAKE_SCREENSHOT_FULLSCREEN, SCREENSHOT_KEY_OTHER, 0 /*pressDelay*/);
+            }
+        });
         mWakeGestureListener = new MyWakeGestureListener(mContext, mHandler);
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
@@ -2575,12 +2650,39 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     }
 
+<<<<<<< HEAD
     /**
      * Read values from config.xml that may be overridden depending on
      * the configuration of the device.
      * eg. Disable long press on home goes to recents on sw600dp.
      */
     private void readConfigurationDependentBehaviors() {
+=======
+     private void enableSwipeThreeFingerGesture(boolean enable){
+        if (enable) {
+            if (haveEnableGesture) return;
+            haveEnableGesture = true;
+            mWindowManagerFuncs.registerPointerEventListener(mSwipeToScreenshot, DEFAULT_DISPLAY);
+        } else {
+            if (!haveEnableGesture) return;
+            haveEnableGesture = false;
+            mWindowManagerFuncs.unregisterPointerEventListener(mSwipeToScreenshot, DEFAULT_DISPLAY);
+        }
+    }
+
+    private void updateKeyAssignments() {
+        int activeHardwareKeys = mDeviceHardwareKeys;
+
+        if (mForceNavbar == 1) {
+            activeHardwareKeys = 0;
+        }
+
+        final boolean hasMenu = (activeHardwareKeys & KEY_MASK_MENU) != 0;
+        final boolean hasAssist = (activeHardwareKeys & KEY_MASK_ASSIST) != 0;
+        final boolean hasAppSwitch = (activeHardwareKeys & KEY_MASK_APP_SWITCH) != 0;
+
+        final ContentResolver resolver = mContext.getContentResolver();
+>>>>>>> f34a2aa3c9b7 (base: Add three-fingers-swipe to screenshot [1/2])
         final Resources res = mContext.getResources();
 
         mLongPressOnHomeBehavior = res.getInteger(
@@ -2653,6 +2755,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mQuickMuteDelay = Settings.System.getIntForUser(resolver,
                     Settings.System.VOLUME_BUTTON_QUICK_MUTE_DELAY, 800,
                     UserHandle.USER_CURRENT);
+
+            //Three Finger Gesture
+            boolean threeFingerGesture = Settings.System.getIntForUser(resolver,
+                    Settings.System.SWIPE_TO_SCREENSHOT, 0, UserHandle.USER_CURRENT) == 1;
+            enableSwipeThreeFingerGesture(threeFingerGesture);
 
             // Configure wake gesture.
             boolean wakeGestureEnabledSetting = Settings.Secure.getIntForUser(resolver,
