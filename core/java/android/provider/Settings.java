@@ -11993,6 +11993,12 @@ public final class Settings {
         @Readable
         public static final String DC_DIM_AUTO_TIME = "dc_dim_auto_time";
 
+       /**
+         * Immersive Navigation gesture
+         * @hide
+         */
+        public static final String IMMERSIVE_NAVIGATION = "immersive_navigation";
+
         /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
