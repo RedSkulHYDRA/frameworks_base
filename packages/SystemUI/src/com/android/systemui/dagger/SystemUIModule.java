@@ -58,6 +58,8 @@ import com.android.systemui.model.SysUiState;
 import com.android.systemui.motiontool.MotionToolModule;
 import com.android.systemui.navigationbar.NavigationBarComponent;
 import com.android.systemui.notetask.NoteTaskModule;
+import com.android.systemui.yaap.CellularModule;
+import com.android.systemui.yaap.WifiModule;
 import com.android.systemui.people.PeopleModule;
 import com.android.systemui.plugins.BcSmartspaceConfigPlugin;
 import com.android.systemui.plugins.BcSmartspaceDataPlugin;
@@ -149,6 +151,8 @@ import dagger.Provides;
  */
 @Module(includes = {
             AccessibilityModule.class,
+            CellularModule.class,
+            WifiModule.class,
             AppOpsModule.class,
             AssistModule.class,
             BiometricsModule.class,
