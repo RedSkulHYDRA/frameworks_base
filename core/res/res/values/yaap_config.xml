@@ -65,4 +65,7 @@
          Should be set to dt2w max time / 2 when needed -->
     <integer name="config_singleTapDelay">0</integer>
 
+    <!-- List of system apps that are allowed to be locked with app lock.
+        Use with extreme caution. -->
+    <string-array name="config_appLockAllowedSystemApps" translatable="false" />
 </resources>
