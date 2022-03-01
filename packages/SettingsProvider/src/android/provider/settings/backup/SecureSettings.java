@@ -247,5 +247,6 @@ public class SecureSettings {
         Settings.Secure.DOZE_PICK_UP_GESTURE_ALLOW_AMBIENT,
         Settings.Secure.EXTRA_DIM_AUTO_MODE,
         Settings.Secure.EXTRA_DIM_AUTO_TIME,
+        Settings.Secure.IGNORE_AUTH_CONFIRMATION,
     };
 }
