@@ -37,4 +37,8 @@
     <!-- Auth ripple animation duration
          AOSP default is 1533 -->
     <item name="auth_ripple_animation_duration" format="float" type="dimen">1533</item>
+
+   <!-- The height of the WiFi toggle layout in Internet panel -->
+    <dimen name="internet_dialog_wifi_toggle_height">56dp</dimen>
+
 </resources>
