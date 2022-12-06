@@ -33,6 +33,7 @@ public class KeyguardPinViewController
         extends KeyguardPinBasedInputViewController<KeyguardPINView> {
     private final KeyguardUpdateMonitor mKeyguardUpdateMonitor;
     private final DevicePostureController mPostureController;
+    private final SecurityMode mSecurityMode;
     private final DevicePostureController.Callback mPostureCallback = posture ->
             mView.onDevicePostureChanged(posture);
 
@@ -57,6 +58,7 @@ public class KeyguardPinViewController
         mPostureController = postureController;
         mLockPatternUtils = lockPatternUtils;
         mKeyguardSecurityCallback = keyguardSecurityCallback;
+        mSecurityMode = securityMode;
     }
 
     @Override
@@ -129,7 +131,7 @@ public class KeyguardPinViewController
         if (matched) {
             mPasswordEntry.setEnabled(false);
             mKeyguardSecurityCallback.reportUnlockAttempt(userId, true, 0);
-            mKeyguardSecurityCallback.dismiss(true, userId);
+            mKeyguardSecurityCallback.dismiss(true, userId, mSecurityMode);
             mView.resetPasswordText(true, true);
         }
     }
