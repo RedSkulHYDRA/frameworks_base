@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.hardware.input.InputManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -37,6 +38,9 @@ import android.view.KeyEvent;
 import android.view.WindowManagerGlobal;
 
 import com.android.internal.statusbar.IStatusBarService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Some custom utilities
@@ -142,5 +146,22 @@ public class YaapUtils {
 
     public static boolean isPackageInstalled(Context context, String pkg) {
         return isPackageInstalled(context, pkg, true);
+    }
+    public static List<String> launchablePackages(Context context) {
+        List<String> list = new ArrayList<>();
+
+        Intent filter = new Intent(Intent.ACTION_MAIN, null);
+        filter.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<ResolveInfo> apps = context.getPackageManager().queryIntentActivities(filter,
+                PackageManager.GET_META_DATA);
+
+        int numPackages = apps.size();
+        for (int i = 0; i < numPackages; i++) {
+            ResolveInfo app = apps.get(i);
+            list.add(app.activityInfo.packageName);
+        }
+
+        return list;
     }
 }
