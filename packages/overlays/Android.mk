@@ -22,11 +22,11 @@ LOCAL_NOTICE_FILE := $(LOCAL_PATH)/../../NOTICE
 LOCAL_REQUIRED_MODULES := \
 	DisplayCutoutEmulationCornerOverlay \
 	DisplayCutoutEmulationDoubleOverlay \
-    DisplayCutoutEmulationHoleOverlay \
+        DisplayCutoutEmulationHoleOverlay \
 	DisplayCutoutEmulationTallOverlay \
 	DisplayCutoutEmulationWaterfallOverlay \
 	FontNotoSerifSourceOverlay \
-IconPackCircularAndroidOverlay \
+        IconPackCircularAndroidOverlay \
 	IconPackCircularLauncherOverlay \
 	IconPackCircularSettingsOverlay \
 	IconPackCircularSystemUIOverlay \
@@ -57,6 +57,7 @@ IconPackCircularAndroidOverlay \
 	IconPackRoundedSystemUIOverlay \
 	IconPackRoundedThemePickerOverlay \
 	IconPackOOSAndroidOverlay \
+        IconPackOOSSettingsOverlay \
 	IconPackOOSSystemUIOverlay \
 	IconPackAcherusAndroidOverlay \
 	IconPackAcherusSystemUIOverlay \
