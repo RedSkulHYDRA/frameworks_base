@@ -34,7 +34,6 @@ public final class PixelPropsUtils {
     private static final String TAG = "PixelPropsUtils";
 
     private static final String PACKAGE_FINSKY = "com.android.vending";
-    private static final String PACKAGE_SI = "com.google.android.settings.intelligence";
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PROCESS_GMS_PERSISTENT = PACKAGE_GMS + ".persistent";
@@ -53,19 +52,20 @@ public final class PixelPropsUtils {
     private static final String persist_model =
             Resources.getSystem().getString(R.string.persist_model);
 
-    private static final HashMap<String, String> walleyeProps = new HashMap<>(Map.of(
+
+    private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
         "ID", "OPM1.171019.011",
-        "MODEL", "Pixel 2",
-        "PRODUCT", "walleye",
-        "DEVICE", "walleye",
-        "FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys"
-    ));
+        "DEVICE", "marlin",
+        "PRODUCT", "marlin",
+        "MODEL", "Pixel XL",
+        "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
+    )); 
 
     private static final HashMap<String, String> persistProps = new HashMap<>(Map.of(
         "ID", persist_fp.split("/", 5)[3],
-        "MODEL", persist_model,
-        "PRODUCT", persist_device,
         "DEVICE", persist_device,
+        "PRODUCT", persist_device,
+        "MODEL", persist_model,
         "FINGERPRINT", persist_fp
     ));
 
@@ -77,24 +77,16 @@ public final class PixelPropsUtils {
         "FINGERPRINT", build_fp
     ));
 
-    private static final HashMap<String, Object> commonProps;
-    static {
-        Map<String, Object> tMap = new HashMap<>();
-        tMap.put("BRAND", "google");
-        tMap.put("MANUFACTURER", "Google");
-        // conditionally spoofing if different
-        if (Build.IS_DEBUGGABLE)
-            tMap.put("IS_DEBUGGABLE", false);
-        if (Build.IS_ENG)
-            tMap.put("IS_ENG", false);
-        if (!Build.IS_USER)
-            tMap.put("IS_USER", true);
-        if (!Build.TYPE.equals("user"))
-            tMap.put("TYPE", "user");
-        if (!Build.TAGS.equals("release-keys"))
-            tMap.put("TAGS", "release-keys");
-        commonProps = new HashMap<>(tMap);
-    }
+    private static final HashMap<String, Object> commonProps = new HashMap<>(Map.of(
+        "BRAND", "google",
+        "MANUFACTURER", "Google",
+        "IS_DEBUGGABLE", false,
+        "IS_ENG", false,
+        "IS_USERDEBUG", false,
+        "IS_USER", true,
+        "TYPE", "user",
+        "TAGS", "release-keys"
+    ));
 
     private static final HashMap<String, HashMap<String, String>> propsToKeep;
     static {
@@ -120,7 +112,12 @@ public final class PixelPropsUtils {
     }
 
     private static final HashSet<String> extraPackagesToChange = new HashSet<>(Set.of(
-        "com.breel.wallpapers20"
+        "com.breel.wallpapers20",
+        "com.snapchat.android"
+    ));
+
+    private static final HashSet<String> marlinPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.apps.photos"
     ));
 
     private static final HashSet<String> extraGMSProcToChange = new HashSet<>(Set.of(
@@ -134,7 +131,10 @@ public final class PixelPropsUtils {
         if (packageName == null) return;
         if (isLoggable()) Log.d(TAG, "Package = " + packageName);
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
-        if (packageName.equals(PACKAGE_GMS)) {
+        if (marlinPackagesToChange.contains(packageName)) {
+            commonProps.forEach(PixelPropsUtils::setPropValue);
+            marlinProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (packageName.equals(PACKAGE_GMS)) {
             final String procName = Application.getProcessName();
             final boolean isUnstable = PROCESS_GMS_UNSTABLE.equals(procName);
             final boolean isPersistent = !isUnstable && PROCESS_GMS_PERSISTENT.equals(procName);
@@ -144,7 +144,7 @@ public final class PixelPropsUtils {
             if (!isUnstable && !isPersistent && !isExtra) return;
             commonProps.forEach(PixelPropsUtils::setPropValue);
             if (isUnstable) {
-                walleyeProps.forEach(PixelPropsUtils::setPropValue);
+                marlinProps.forEach(PixelPropsUtils::setPropValue);
                 return;
             }
             if (isExtra) {
@@ -170,7 +170,7 @@ public final class PixelPropsUtils {
                             Log.d(TAG, "Not defining " + key + " prop for: " + packageName);
                         return;
                     }
-                    value = keyValue;
+                        value = keyValue;
                 }
                 if (isLoggable()) Log.d(TAG, "Defining " + key + " prop for: " + packageName);
                 setPropValue(key, value);
