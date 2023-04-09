@@ -60,6 +60,10 @@ public final class PixelPropsUtils {
         "MODEL", "Pixel XL",
         "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
     )); 
+    
+    private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
+        "MODEL", "SO-52A"
+    )); 
 
     private static final HashMap<String, String> persistProps = new HashMap<>(Map.of(
         "ID", persist_fp.split("/", 5)[3],
@@ -119,6 +123,13 @@ public final class PixelPropsUtils {
     private static final HashSet<String> marlinPackagesToChange = new HashSet<>(Set.of(
         "com.google.android.apps.photos"
     ));
+    
+    private static final HashSet<String> XP5PackagesToChange = new HashSet<>(Set.of(
+        "com.activision.callofduty.shooter",
+        "com.tencent.tmgp.kr.codm",
+        "com.garena.game.codm",
+        "com.vng.codmvn"
+    ));
 
     private static final HashSet<String> extraGMSProcToChange = new HashSet<>(Set.of(
         "com.google.android.gms.ui",
@@ -134,6 +145,8 @@ public final class PixelPropsUtils {
         if (marlinPackagesToChange.contains(packageName)) {
             commonProps.forEach(PixelPropsUtils::setPropValue);
             marlinProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (XP5PackagesToChange.contains(packageName)) {
+            XP5Props.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.equals(PACKAGE_GMS)) {
             final String procName = Application.getProcessName();
             final boolean isUnstable = PROCESS_GMS_UNSTABLE.equals(procName);
