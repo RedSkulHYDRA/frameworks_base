@@ -761,13 +761,7 @@ interface IActivityManager {
     int getBackgroundRestrictionExemptionReason(int uid);
 
     /**
-<<<<<<< HEAD
      *  Force full screen for devices with cutout
      */
     boolean shouldForceCutoutFullscreen(in String packageName);
-=======
-     *  Should disable touch if three fingers to screen shot is active?
-     */
-    boolean isSwipeToScreenshotGestureActive();
->>>>>>> f34a2aa3c9b7 (base: Add three-fingers-swipe to screenshot [1/2])
 }
