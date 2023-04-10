@@ -110,7 +110,6 @@ public final class PixelPropsUtils {
         tMap.put("com.google.android.MTCL83", null);
         tMap.put("com.google.android.UltraCVM", null);
         tMap.put("com.google.android.apps.cameralite", null);
-        tMap.put("com.google.ar.core", null);
         tMap.put("com.google.android.tts", null);
         propsToKeep = new HashMap<>(tMap);
     }
