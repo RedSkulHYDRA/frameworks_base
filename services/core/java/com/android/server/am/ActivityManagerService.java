@@ -18678,8 +18678,6 @@ public class ActivityManagerService extends IActivityManager.Stub
     public boolean shouldForceCutoutFullscreen(String packageName) {
         return mActivityTaskManager.shouldForceCutoutFullscreen(packageName);
     }
-}
-
     public boolean isSwipeToScreenshotGestureActive() {
         synchronized (this) {
             return mIsSwipeToScreenshotEnabled && SystemProperties.getBoolean("sys.android.screenshot", false);

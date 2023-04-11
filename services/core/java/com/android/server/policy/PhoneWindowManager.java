@@ -2588,12 +2588,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     }
 
-    /**
-     * Read values from config.xml that may be overridden depending on
-     * the configuration of the device.
-     * eg. Disable long press on home goes to recents on sw600dp.
-     */
-    private void readConfigurationDependentBehaviors() {
     private void enableSwipeThreeFingerGesture(boolean enable){
         if (enable) {
             if (haveEnableGesture) return;
@@ -2606,6 +2600,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     }
 
+    /**
+     * Read values from config.xml that may be overridden depending on
+     * the configuration of the device.
+     * eg. Disable long press on home goes to recents on sw600dp.
+     */
+    private void readConfigurationDependentBehaviors() {
         final Resources res = mContext.getResources();
 
         mLongPressOnHomeBehavior = res.getInteger(
