@@ -45,6 +45,13 @@ public final class PixelPropsUtils {
     private static final String build_model =
             Resources.getSystem().getString(R.string.build_model);
 
+    private static final String persist_device =
+            Resources.getSystem().getString(R.string.persist_device);
+    private static final String persist_fp =
+            Resources.getSystem().getString(R.string.persist_fp);
+    private static final String persist_model =
+            Resources.getSystem().getString(R.string.persist_model);
+
 
     private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
         "ID", "OPM1.171019.011",
@@ -57,6 +64,14 @@ public final class PixelPropsUtils {
     private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
         "MODEL", "SO-52A"
     )); 
+
+    private static final HashMap<String, String> persistProps = new HashMap<>(Map.of(
+        "ID", persist_fp.split("/", 5)[3],
+        "DEVICE", persist_device,
+        "PRODUCT", persist_device,
+        "MODEL", persist_model,
+        "FINGERPRINT", persist_fp
+    ));
 
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
@@ -144,7 +159,12 @@ public final class PixelPropsUtils {
                 marlinProps.forEach(PixelPropsUtils::setPropValue);
                 return;
             }
-            buildProps.forEach(PixelPropsUtils::setPropValue);
+            if (isExtra) {
+                buildProps.forEach(PixelPropsUtils::setPropValue);
+                return;
+            }
+            // persistent
+            persistProps.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.startsWith("com.google.")
                 || extraPackagesToChange.contains(packageName)) {
             final boolean isInKeep = propsToKeep.containsKey(packageName);
