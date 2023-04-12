@@ -45,7 +45,6 @@ public final class PixelPropsUtils {
     private static final String build_model =
             Resources.getSystem().getString(R.string.build_model);
 
-<<<<<<< HEAD
 
     private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
         "ID", "OPM1.171019.011",
@@ -58,15 +57,6 @@ public final class PixelPropsUtils {
     private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
         "MODEL", "SO-52A"
     )); 
-=======
-    private static final HashMap<String, String> walleyeProps = new HashMap<>(Map.of(
-        "ID", "OPM1.171019.011",
-        "MODEL", "Pixel 2",
-        "PRODUCT", "walleye",
-        "DEVICE", "walleye",
-        "FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys"
-    ));
->>>>>>> upstream/thirteen
 
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
