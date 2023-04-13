@@ -22,15 +22,20 @@ LOCAL_NOTICE_FILE := $(LOCAL_PATH)/../../NOTICE
 LOCAL_REQUIRED_MODULES := \
 	DisplayCutoutEmulationCornerOverlay \
 	DisplayCutoutEmulationDoubleOverlay \
-        DisplayCutoutEmulationHoleOverlay \
+    DisplayCutoutEmulationHoleOverlay \
 	DisplayCutoutEmulationTallOverlay \
 	DisplayCutoutEmulationWaterfallOverlay \
 	FontNotoSerifSourceOverlay \
-        IconPackCircularAndroidOverlay \
+	IconPackCircularAndroidOverlay \
 	IconPackCircularLauncherOverlay \
 	IconPackCircularSettingsOverlay \
 	IconPackCircularSystemUIOverlay \
 	IconPackCircularThemePickerOverlay \
+	IconPackPUIAndroidOverlay \
+	IconPackPUILauncherOverlay \
+	IconPackPUISettingsOverlay \
+	IconPackPUISystemUIOverlay \
+	IconPackPUIThemePickerOverlay \
 	IconPackVictorAndroidOverlay \
 	IconPackVictorLauncherOverlay \
 	IconPackVictorSettingsOverlay \
@@ -57,10 +62,23 @@ LOCAL_REQUIRED_MODULES := \
 	IconPackRoundedSystemUIOverlay \
 	IconPackRoundedThemePickerOverlay \
 	IconPackOOSAndroidOverlay \
-        IconPackOOSSettingsOverlay \
+	IconPackOOSLauncherOverlay \
+	IconPackOOSSettingsOverlay \
 	IconPackOOSSystemUIOverlay \
+	IconPackOOSThemePickerOverlay \
 	IconPackAcherusAndroidOverlay \
+	IconPackAcherusLauncherOverlay \
+	IconPackAcherusSettingsOverlay \
 	IconPackAcherusSystemUIOverlay \
+	IconPackAcherusThemePickerOverlay \
+	IconPackOutlineAndroidOverlay \
+	IconPackOutlineLauncherOverlay \
+	IconPackOutlineSettingsOverlay \
+	IconPackOutlineSystemUIOverlay \
+	IconPackOutlineThemePickerOverlay \
+	IconPackXperiaAndroidOverlay \
+	IconPackXperiaSettingsOverlay \
+	IconPackXperiaSystemUIOverlay \
 	NavigationBarMode3ButtonOverlay \
 	NavigationBarModeGesturalOverlay \
 	NavigationBarModeGesturalOverlayNarrowBack \
