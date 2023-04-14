@@ -55,7 +55,8 @@ public final class PixelPropsUtils {
     )); 
     
     private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
-        "MODEL", "SO-52A"
+        "MODEL", "SO-52A",
+        "MANUFACTURER", "Sony"
     )); 
 
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
@@ -99,8 +100,8 @@ public final class PixelPropsUtils {
         propsToKeep = new HashMap<>(tMap);
     }
 
-    private static final HashSet<String> extraPackagesToChange = new HashSet<>(Set.of(
-        "com.breel.wallpapers20",
+    private static final HashSet<String> cheetahPackagesToChange = new HashSet<>(Set.of(
+        "com.breel.wallpapers20"
         "com.snapchat.android"
     ));
 
@@ -131,6 +132,9 @@ public final class PixelPropsUtils {
             marlinProps.forEach(PixelPropsUtils::setPropValue);
         } else if (XP5PackagesToChange.contains(packageName)) {
             XP5Props.forEach(PixelPropsUtils::setPropValue);
+        } else if (cheetahPackagesToChange.contains(packageName)) {
+            buildProps.forEach(PixelPropsUtils::setPropValue); 
+            commonProps.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.equals(PACKAGE_GMS)) {
             final String procName = Application.getProcessName();
             final boolean isUnstable = PROCESS_GMS_UNSTABLE.equals(procName);
