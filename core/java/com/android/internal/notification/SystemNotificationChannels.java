@@ -69,8 +69,6 @@ public class SystemNotificationChannels {
     public static String ACCESSIBILITY_SECURITY_POLICY = "ACCESSIBILITY_SECURITY_POLICY";
     public static String ABUSIVE_BACKGROUND_APPS = "ABUSIVE_BACKGROUND_APPS";
 
-    public static final String POWEROFF_ALARM = "POWEROFF_ALARM";
-
     public static void createAll(Context context) {
         final NotificationManager nm = context.getSystemService(NotificationManager.class);
         List<NotificationChannel> channelsList = new ArrayList<NotificationChannel>();
@@ -227,12 +225,6 @@ public class SystemNotificationChannels {
                 NotificationManager.IMPORTANCE_LOW);
         channelsList.add(abusiveBackgroundAppsChannel);
 
-        final NotificationChannel powerOffAlarmChannel = new NotificationChannel(
-                POWEROFF_ALARM,
-                context.getString(R.string.notification_channel_poweroff_alarm),
-                NotificationManager.IMPORTANCE_LOW);
-        channelsList.add(powerOffAlarmChannel);
-
         extraChannels(context, channelsList);
 
         nm.createNotificationChannels(channelsList);
@@ -276,9 +268,6 @@ public class SystemNotificationChannels {
         channel(ctx, MISSING_PERMISSION,
                     R.string.notification_channel_missing_permission,
                     NotificationManager.IMPORTANCE_HIGH, true, dest);
-        channel(ctx, POWEROFF_ALARM,
-                    R.string.notification_channel_poweroff_alarm,
-                    NotificationManager.IMPORTANCE_LOW, true, dest);
     }
 
     private static NotificationChannel channel(Context ctx, String id, int nameRes, int importance, boolean silent, List<NotificationChannel> dest) {
