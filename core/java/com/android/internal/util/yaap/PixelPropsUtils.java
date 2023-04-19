@@ -51,17 +51,9 @@ public final class PixelPropsUtils {
         "MODEL", "Pixel XL",
         "PRODUCT", "marlin",
         "DEVICE", "marlin",
-        "FINGERPRINT", "google/marlin/marlin:10/QP1A.191005.007.A3/5972272:user/release-keys"
+        "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
     )); 
     
-    private static final HashMap<String, String> walleyeProps = new HashMap<>(Map.of(
-        "ID", "OPM1.171019.011",
-        "MODEL", "Pixel 2",
-        "PRODUCT", "walleye",
-        "DEVICE", "walleye",
-        "FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys"
-    ));
-
     private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
         "MODEL", "SO-52A",
         "MANUFACTURER", "Sony"
@@ -84,6 +76,13 @@ public final class PixelPropsUtils {
         "IS_USER", true,
         "TYPE", "user",
         "TAGS", "release-keys"
+    ));
+    
+    private static final HashMap<String, Object> UserdebugProps = new HashMap<>(Map.of(
+        "BRAND", "google",
+        "MANUFACTURER", "Google",
+        "IS_DEBUGGABLE", true,
+        "TYPE", "userdebug"
     ));
 
     private static final HashMap<String, HashMap<String, String>> propsToKeep;
@@ -110,6 +109,7 @@ public final class PixelPropsUtils {
 
     private static final HashSet<String> extraPackagesToChange = new HashSet<>(Set.of(
         "com.breel.wallpapers18",
+        "com.breel.wallpapers19",
         "com.breel.wallpapers20"
     ));
 
@@ -122,6 +122,10 @@ public final class PixelPropsUtils {
         "com.tencent.tmgp.kr.codm",
         "com.garena.game.codm",
         "com.vng.codmvn"
+    ));
+
+    private static final HashSet<String> UserdebugPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.apps.nexuslauncher"       
     ));
 
     private static final HashSet<String> extraGMSProcToChange = new HashSet<>(Set.of(
@@ -140,6 +144,8 @@ public final class PixelPropsUtils {
             marlinProps.forEach(PixelPropsUtils::setPropValue);
         } else if (XP5PackagesToChange.contains(packageName)) {
             XP5Props.forEach(PixelPropsUtils::setPropValue);
+        } else if (UserdebugPackagesToChange.contains(packageName)) {
+            UserdebugProps.forEach(PixelPropsUtils::setPropValue);            
         } else if (packageName.equals(PACKAGE_GMS)) {
             final String procName = Application.getProcessName();
             final boolean isUnstable = PROCESS_GMS_UNSTABLE.equals(procName);
@@ -150,7 +156,7 @@ public final class PixelPropsUtils {
             if (!isUnstable && !isPersistent && !isExtra) return;
             commonProps.forEach(PixelPropsUtils::setPropValue);
             if (isUnstable) {
-                walleyeProps.forEach(PixelPropsUtils::setPropValue);
+                marlinProps.forEach(PixelPropsUtils::setPropValue);
                 return;
             }
             buildProps.forEach(PixelPropsUtils::setPropValue);
