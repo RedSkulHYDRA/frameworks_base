@@ -168,6 +168,7 @@ public final class PixelPropsUtils {
             commonProps.forEach(PixelPropsUtils::setPropValue);
         } else if (ravenPackagesToChange.contains(packageName)) {
             ravenProps.forEach(PixelPropsUtils::setPropValue);
+            commonProps.forEach(PixelPropsUtils::setPropValue);
         } else if (XP5PackagesToChange.contains(packageName)) {
             XP5Props.forEach(PixelPropsUtils::setPropValue);
         } else if (UserdebugPackagesToChange.contains(packageName)) {
