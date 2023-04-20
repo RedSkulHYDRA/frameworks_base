@@ -54,6 +54,14 @@ public final class PixelPropsUtils {
         "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
     ));
 
+    private static final HashMap<String, String> ravenProps = new HashMap<>(Map.of(
+        "ID", "TQ2A.230405.003.E1",
+        "MODEL", "Pixel 6 Pro",
+        "PRODUCT", "raven",
+        "DEVICE", "raven",
+        "FINGERPRINT", "google/raven/raven:13/TQ2A.230405.003.E1/9802792:user/release-keys"
+    ));
+
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
         "DEVICE", build_device,
@@ -115,6 +123,10 @@ public final class PixelPropsUtils {
         "com.google.android.apps.photos"
     ));
 
+    private static final HashSet<String> ravenPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.as"
+    ));
+
     private static final HashSet<String> XP5PackagesToChange = new HashSet<>(Set.of(
         "com.activision.callofduty.shooter",
         "com.tencent.tmgp.kr.codm",
@@ -153,6 +165,9 @@ public final class PixelPropsUtils {
             buildProps.forEach(PixelPropsUtils::setPropValue);
         } else if (marlinPackagesToChange.contains(packageName)) {
             marlinProps.forEach(PixelPropsUtils::setPropValue);
+            commonProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (ravenPackagesToChange.contains(packageName)) {
+            ravenProps.forEach(PixelPropsUtils::setPropValue);
             commonProps.forEach(PixelPropsUtils::setPropValue);
         } else if (XP5PackagesToChange.contains(packageName)) {
             XP5Props.forEach(PixelPropsUtils::setPropValue);
