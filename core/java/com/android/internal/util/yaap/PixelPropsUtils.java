@@ -47,7 +47,6 @@ public final class PixelPropsUtils {
             Resources.getSystem().getString(R.string.build_model);
 
     private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
-
         "ID", "OPM1.171019.011",
         "MODEL", "Pixel XL",
         "PRODUCT", "marlin",
