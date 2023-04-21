@@ -825,7 +825,9 @@ public class ApplicationPackageManager extends PackageManager {
                 name.contains("PIXEL_2020_MIDYEAR_EXPERIENCE") ||
                 name.contains("PIXEL_2019_EXPERIENCE") ||
                 name.contains("PIXEL_2019_PRELOAD") ||
-                name.contains("PIXEL_2019_MIDYEAR_EXPERIENCE"))) {
+                name.contains("PIXEL_2019_MIDYEAR_EXPERIENCE") ||
+                name.contains("PIXEL_2018_EXPERIENCE") ||
+                name.contains("PIXEL_2017_EXPERIENCE"))) {
             return false;
         } else if (packageName != null &&
                 packageName.contains("com.google.android.as") &&
