@@ -118,7 +118,7 @@ public class ArcaneIdleManager {
                 !RunningServices.get(i).pkgList[0].toString().contains(".facebook") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".zhihu") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ugc") &&
-                !RunningServices.get(i).pkgList[0].toString().contains("gms") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".gms") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".settings") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".GoogleCamera") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ims")) {
