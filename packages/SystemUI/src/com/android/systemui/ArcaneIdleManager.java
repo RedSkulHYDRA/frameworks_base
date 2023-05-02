@@ -111,16 +111,20 @@ public class ArcaneIdleManager {
         localActivityManager = (ActivityManager) imContext.getSystemService(Context.ACTIVITY_SERVICE);
         RunningServices = localActivityManager.getRunningAppProcesses();
         for (int i=0; i < RunningServices.size(); i++) {
-          if (!RunningServices.get(i).pkgList[0].toString().contains(".android") &&
-          	!RunningServices.get(i).pkgList[0].toString().equals("android") &&
+            if (!RunningServices.get(i).pkgList[0].toString().equals("android") &&
+          	    !RunningServices.get(i).pkgList[0].toString().contains(".android") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".google") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".mgoogle") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".facebook") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".zhihu") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ugc") &&
-                !RunningServices.get(i).pkgList[0].toString().contains("gms") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".gms") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".settings") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".GoogleCamera") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".whatsapp") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".instagram") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".instander") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".snapchat") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ims")) {
                     localActivityManager.killBackgroundProcesses(RunningServices.get(i).pkgList[0].toString());
             }
