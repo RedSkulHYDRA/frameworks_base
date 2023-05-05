@@ -6184,7 +6184,8 @@ public final class Settings {
          * The order in each list decides the priority for each shortcut
          * @hide
          */
-
+        @Readable
+        public static final String KEYGUARD_QUICK_TOGGLES_NEW = "keyguard_quick_toggles_new";
 
         /**
          * @hide
