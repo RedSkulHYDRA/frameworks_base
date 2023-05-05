@@ -125,6 +125,7 @@ public class ArcaneIdleManager {
                 !RunningServices.get(i).pkgList[0].toString().contains(".instagram") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".instander") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".snapchat") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".telegram") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ims")) {
                     localActivityManager.killBackgroundProcesses(RunningServices.get(i).pkgList[0].toString());
             }
