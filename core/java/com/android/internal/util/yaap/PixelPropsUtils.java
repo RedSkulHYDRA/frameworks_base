@@ -54,6 +54,14 @@ public final class PixelPropsUtils {
         "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
     ));
 
+    private static final HashMap<String, String> redfinProps = new HashMap<>(Map.of(
+        "ID", "TQ2A.230505.002",
+        "MODEL", "Pixel 5",
+        "PRODUCT", "redfin",
+        "DEVICE", "redfin",
+        "FINGERPRINT", "google/redfin/redfin:13/TQ2A.230505.002/9891397:user/release-keys"
+    ));
+
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
         "DEVICE", build_device,
@@ -108,11 +116,17 @@ public final class PixelPropsUtils {
     }
 
     private static final HashSet<String> extraPackagesToChange = new HashSet<>(Set.of(
-        "com.breel.wallpapers20"
+        "com.breel.wallpapers18"
     ));
 
     private static final HashSet<String> marlinPackagesToChange = new HashSet<>(Set.of(
         "com.google.android.apps.photos"
+    ));
+
+    private static final HashSet<String> redfinPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.apps.wallpaper",
+        "com.google.android.googlequicksearchbox",
+        "com.breel.wallpapers20"
     ));
 
     private static final HashSet<String> XP5PackagesToChange = new HashSet<>(Set.of(
@@ -154,11 +168,14 @@ public final class PixelPropsUtils {
         } else if (marlinPackagesToChange.contains(packageName)) {
             marlinProps.forEach(PixelPropsUtils::setPropValue);
             commonProps.forEach(PixelPropsUtils::setPropValue);
-        } else if (UserdebugPackagesToChange.contains(packageName)) {
-            UserdebugProps.forEach(PixelPropsUtils::setPropValue); 
-            buildProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (redfinPackagesToChange.contains(packageName)) {
+            redfinProps.forEach(PixelPropsUtils::setPropValue);
+            commonProps.forEach(PixelPropsUtils::setPropValue);
         } else if (XP5PackagesToChange.contains(packageName)) {
             XP5Props.forEach(PixelPropsUtils::setPropValue);
+        } else if (UserdebugPackagesToChange.contains(packageName)) {
+            UserdebugProps.forEach(PixelPropsUtils::setPropValue); 
+            redfinProps.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.startsWith("com.google.")
                 || extraPackagesToChange.contains(packageName)) {
             final boolean isInKeep = propsToKeep.containsKey(packageName);
