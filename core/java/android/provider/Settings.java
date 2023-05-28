@@ -5588,94 +5588,6 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_VIEW_LOCATION = "network_traffic_view_location";
 
         /**
-         * Whether gaming mode sets {@link Global.HEADS_UP_NOTIFICATIONS_ENABLED}
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_HEADS_UP = "gaming_mode_heads_up";
-
-        /**
-         * Whether gaming mode sets DND {@link Global.ZEN_MODE}
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_ZEN = "gaming_mode_zen";
-
-        /**
-         * Gaming mode ringer
-         * 0 = Disabled / Don't change (default)
-         * 1 = Vibrate
-         * 2 = Silent
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_RINGER = "gaming_mode_ringer";
-
-        /**
-         * Whether gaming mode sets {@link FORCE_SHOW_NAVBAR}
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_NAVBAR = "gaming_mode_navbar";
-
-        /**
-         * Whether gaming mode sets {@link HARDWARE_KEYS_DISABLE}
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_HW_BUTTONS = "gaming_mode_hw_buttons";
-
-        /**
-         * Whether gaming mode sets night light
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_NIGHT_LIGHT = "gaming_mode_night_light";
-
-        /**
-         * Whether to disable battery saver schedule when gaming mode is on
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_BATTERY_SCHEDULE = "gaming_mode_battery_schedule";
-
-        /**
-         * Whether gaming mode toggles auto brightness
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_BRIGHTNESS_ENABLED = "gaming_mode_brightness_enabled";
-
-        /**
-         * Gaming mode brightness level in percentage
-         * 0 = disabled
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_BRIGHTNESS = "gaming_mode_brightness";
-
-        /**
-         * Whether gaming mode sets media volume
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_MEDIA_ENABLED = "gaming_mode_media_enabled";
-
-        /**
-         * Gaming mode media volume level in percentage
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_MEDIA = "gaming_mode_media";
-
-        /**
-         * Whether gaming mode turns off when screen is off
-         * @hide
-         */
-        @Readable
-        public static final String GAMING_MODE_SCREEN_OFF = "gaming_mode_screen_off";
-
-        /**
          * Controls whether to show notification headers
          * @hide
          */
@@ -6075,6 +5987,7 @@ public final class Settings {
          * process when restoring historical backup datasets.
          *
          * All settings in {@link LEGACY_RESTORE_SETTINGS} array *must* have a non-null validator,
+         * otherwise they won't be restored.
          *
          * @hide
          */
