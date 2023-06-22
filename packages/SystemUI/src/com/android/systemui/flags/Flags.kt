@@ -136,7 +136,7 @@ object Flags {
 
     // TODO(b/254512676): Tracking Bug
     @JvmField
-    val LOCKSCREEN_CUSTOM_CLOCKS = releasedFlag(207, "lockscreen_custom_clocks")
+    val LOCKSCREEN_CUSTOM_CLOCKS = unreleasedFlag(207, "lockscreen_custom_clocks")
 
     /**
      * Whether the clock on a wide lock screen should use the new "stepping" animation for moving
@@ -192,7 +192,7 @@ object Flags {
 
     // TODO(b/262780002): Tracking Bug
     @JvmField
-    val REVAMPED_WALLPAPER_UI = releasedFlag(222, "revamped_wallpaper_ui", teamfood = true)
+    val REVAMPED_WALLPAPER_UI = unreleasedFlag(222, "revamped_wallpaper_ui", teamfood = true)
 
     // flag for controlling auto pin confirmation and material u shapes in bouncer
     @JvmField
