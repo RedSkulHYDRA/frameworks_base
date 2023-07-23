@@ -56,11 +56,15 @@ public final class PixelPropsUtils {
     private static final String build_model = mResources.getString(R.string.build_model);
 
     private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
-        "ID", "OPM1.171019.011",
+        "ID", "NJH47F",
         "MODEL", "Pixel XL",
         "PRODUCT", "marlin",
         "DEVICE", "marlin",
-        "FINGERPRINT", "google/marlin/marlin:8.1.0/OPM1.171019.011/4448085:user/release-keys"
+        "FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys"
+    ));
+
+    private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
+        "MODEL", "SO-52A"
     ));
 
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
@@ -71,21 +75,25 @@ public final class PixelPropsUtils {
         "FINGERPRINT", build_fp
     ));
 
-    private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
-        "MODEL", "SO-52A"
-    ));
+    private static final HashMap<String, Object> commonProps;
+    static {
+        Map<String, Object> tMap = new HashMap<>();
+        tMap.put("BRAND", "google");
+        tMap.put("MANUFACTURER", "Google");
+        // conditionally spoofing if different
+        if (Build.IS_DEBUGGABLE)
+            tMap.put("IS_DEBUGGABLE", false);
+        if (Build.IS_ENG)
+            tMap.put("IS_ENG", false);
+        if (!Build.IS_USER)
+            tMap.put("IS_USER", true);
+        if (!Build.TYPE.equals("user"))
+            tMap.put("TYPE", "user");
+        if (!Build.TAGS.equals("release-keys"))
+            tMap.put("TAGS", "release-keys");
+        commonProps = new HashMap<>(tMap);
+    }
 
-    private static final HashMap<String, Object> commonProps = new HashMap<>(Map.of(
-        "BRAND", "google",
-        "MANUFACTURER", "Google",
-        "IS_DEBUGGABLE", false,
-        "IS_ENG", false,
-        "IS_USERDEBUG", false,
-        "IS_USER", true,
-        "TYPE", "user",
-        "TAGS", "release-keys"
-    ));
-    
     private static final HashMap<String, HashMap<String, String>> propsToKeep;
     static {
         // null means skip the package
@@ -106,9 +114,6 @@ public final class PixelPropsUtils {
         tMap.put("com.google.android.apps.cameralite", null);
         tMap.put("com.google.ar.core", null);
         tMap.put("com.google.android.tts", null);
-        tMap.put("com.google.android.youtube", null);
-        tMap.put("com.google.android.apps.youtube.kids", null);
-        tMap.put("com.google.android.apps.youtube.music", null);
         propsToKeep = new HashMap<>(tMap);
     }
 
