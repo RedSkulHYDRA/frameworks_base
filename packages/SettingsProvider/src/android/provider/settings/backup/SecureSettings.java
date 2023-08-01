@@ -248,5 +248,7 @@ public class SecureSettings {
         Settings.Secure.EXTRA_DIM_AUTO_MODE,
         Settings.Secure.EXTRA_DIM_AUTO_TIME,
         Settings.Secure.IGNORE_AUTH_CONFIRMATION,
+        Settings.Secure.DC_DIM_AUTO_MODE,
+        Settings.Secure.DC_DIM_AUTO_TIME
     };
 }

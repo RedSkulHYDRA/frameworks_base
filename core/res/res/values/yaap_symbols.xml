@@ -98,4 +98,7 @@
     <!-- Enable face auth only when swiping security view -->
     <java-symbol type="bool" name="config_faceAuthOnlyOnSecurityView" />
 
+    <!-- Absolute path of the DC dimming node -->
+    <java-symbol type="string" name="config_dcdNodePath" />
+
 </resources>
