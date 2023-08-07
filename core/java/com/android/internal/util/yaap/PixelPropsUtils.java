@@ -40,6 +40,7 @@ public final class PixelPropsUtils {
     private static final String PACKAGE_GMS = "com.google.android.gms";
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PROCESS_GMS_PERSISTENT = PACKAGE_GMS + ".persistent";
+    private static final String SDK_PROP = ""+Build.VERSION.SDK;
 
     private static final Resources mResources;
     static {
@@ -60,6 +61,8 @@ public final class PixelPropsUtils {
         "MODEL", "Pixel XL",
         "PRODUCT", "marlin",
         "DEVICE", "marlin",
+        "HARDWARE", "marlin",
+        "SDK", "SDK_PROP",
         "FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys"
     ));
 
@@ -72,6 +75,8 @@ public final class PixelPropsUtils {
         "DEVICE", build_device,
         "PRODUCT", build_device,
         "MODEL", build_model,
+        "HARDWARE", build_device,
+        "SDK", "SDK_PROP",
         "FINGERPRINT", build_fp
     ));
 
