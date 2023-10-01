@@ -27,31 +27,24 @@ LOCAL_REQUIRED_MODULES := \
 	DisplayCutoutEmulationWaterfallOverlay \
 	FontNotoSerifSourceOverlay \
 	IconPackCircularAndroidOverlay \
-	IconPackCircularLauncherOverlay \
 	IconPackCircularSettingsOverlay \
 	IconPackCircularSystemUIOverlay \
 	IconPackVictorAndroidOverlay \
-	IconPackVictorLauncherOverlay \
 	IconPackVictorSettingsOverlay \
 	IconPackVictorSystemUIOverlay \
 	IconPackSamAndroidOverlay \
-	IconPackSamLauncherOverlay \
 	IconPackSamSettingsOverlay \
 	IconPackSamSystemUIOverlay \
 	IconPackKaiAndroidOverlay \
-	IconPackKaiLauncherOverlay \
 	IconPackKaiSettingsOverlay \
 	IconPackKaiSystemUIOverlay \
 	IconPackFilledAndroidOverlay \
-	IconPackFilledLauncherOverlay \
 	IconPackFilledSettingsOverlay \
 	IconPackFilledSystemUIOverlay \
 	IconPackRoundedAndroidOverlay \
-	IconPackRoundedLauncherOverlay \
 	IconPackRoundedSettingsOverlay \
 	IconPackRoundedSystemUIOverlay \
 	IconPackOOSAndroidOverlay \
-	IconPackOOSLauncherOverlay \
 	IconPackOOSSettingsOverlay \
 	IconPackOOSSystemUIOverlay \
 	NavigationBarMode3ButtonOverlay \
