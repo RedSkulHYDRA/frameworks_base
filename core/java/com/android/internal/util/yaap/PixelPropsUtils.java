@@ -41,6 +41,12 @@ public final class PixelPropsUtils {
     private static final String PROCESS_GMS_PERSISTENT = PACKAGE_GMS + ".persistent";
     private static final String VERSION_PREFIX = "VERSION.";
 
+    private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
+    private static final String PACKAGE_TURBO = "com.google.android.apps.turbo";
+    private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
+    private static final String PACKAGE_GBOARD = "com.google.android.inputmethod.latin";
+    private static final String PACKAGE_SETUPWIZARD = "com.google.android.setupwizard"; 
+
     private static final Resources mResources;
     static {
         // make sure we only use the english strings
@@ -60,6 +66,14 @@ public final class PixelPropsUtils {
     private static final String build_fp = mResources.getString(R.string.build_fp);
     private static final String build_model = mResources.getString(R.string.build_model);
 
+    private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
+        "ID", "NJH47F",
+        "MODEL", "Pixel XL",
+        "PRODUCT", "marlin",
+        "DEVICE", "marlin",
+        "HARDWARE", "marlin",
+        "FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys"
+    ));
 
     private static final HashMap<String, Object> certifiedProps;
     static {
@@ -77,11 +91,25 @@ public final class PixelPropsUtils {
         certifiedProps = new HashMap<>(tMap);
     }
 
+    private static final HashMap<String, String> huskyProps = new HashMap<>(Map.of(
+        "ID", "UQ1A.240105.004.A1",
+        "MODEL", "Pixel 8 Pro",
+        "PRODUCT", "husky",
+        "DEVICE", "husky",
+        "HARDWARE", "husky",
+        "FINGERPRINT", "google/husky/husky:14/UQ1A.240105.004.A1/11206926:user/release-keys"
+    ));
+
+    private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
+        "MODEL", "SO-52A"
+    ));
+
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
         "DEVICE", build_device,
         "PRODUCT", build_device,
         "MODEL", build_model,
+        "HARDWARE", build_device,
         "FINGERPRINT", build_fp
     ));
 
@@ -131,6 +159,17 @@ public final class PixelPropsUtils {
         "com.breel.wallpapers20"
     ));
 
+    private static final HashSet<String> marlinPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.apps.photos"
+    ));
+
+    private static final HashSet<String> XP5PackagesToChange = new HashSet<>(Set.of(
+        "com.activision.callofduty.shooter",
+        "com.tencent.tmgp.kr.codm",
+        "com.garena.game.codm",
+        "com.vng.codmvn"
+    ));
+
     private static final HashSet<String> extraGMSProcToChange = new HashSet<>(Set.of(
         "com.google.android.gms.ui",
         "com.google.android.gms.learning"
@@ -143,6 +182,7 @@ public final class PixelPropsUtils {
         if (isLoggable()) Log.d(TAG, "Package = " + packageName);
         sIsFinsky = packageName.equals(PACKAGE_FINSKY);
         if (packageName.equals(PACKAGE_GMS)) {
+            setPropValue("TIME", System.currentTimeMillis());
             final String procName = Application.getProcessName();
             final boolean isUnstable = PROCESS_GMS_UNSTABLE.equals(procName);
             final boolean isPersistent = !isUnstable && PROCESS_GMS_PERSISTENT.equals(procName);
@@ -155,7 +195,18 @@ public final class PixelPropsUtils {
                 certifiedProps.forEach(PixelPropsUtils::setPropValue);
                 return;
             }
-            buildProps.forEach(PixelPropsUtils::setPropValue);
+            huskyProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (packageName.equals(PACKAGE_SUBSCRIPTION_RED) || packageName.equals(PACKAGE_TURBO)
+                || packageName.equals(PACKAGE_VELVET) || packageName.equals(PACKAGE_GBOARD)
+                || packageName.equals(PACKAGE_SETUPWIZARD)) {
+                commonProps.forEach(PixelPropsUtils::setPropValue);
+                huskyProps.forEach(PixelPropsUtils::setPropValue);
+                return;
+        } else if (marlinPackagesToChange.contains(packageName)) {
+            marlinProps.forEach(PixelPropsUtils::setPropValue);
+            commonProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (XP5PackagesToChange.contains(packageName)) {
+            XP5Props.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.startsWith("com.google.")
                 || extraPackagesToChange.contains(packageName)) {
             final boolean isInKeep = propsToKeep.containsKey(packageName);
