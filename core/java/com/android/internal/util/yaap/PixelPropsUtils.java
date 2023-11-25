@@ -60,6 +60,14 @@ public final class PixelPropsUtils {
     private static final String build_fp = mResources.getString(R.string.build_fp);
     private static final String build_model = mResources.getString(R.string.build_model);
 
+    private static final HashMap<String, String> marlinProps = new HashMap<>(Map.of(
+        "ID", "NJH47F",
+        "MODEL", "Pixel XL",
+        "PRODUCT", "marlin",
+        "DEVICE", "marlin",
+        "HARDWARE", "marlin",
+        "FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys"
+    ));
 
     private static final HashMap<String, Object> certifiedProps;
     static {
@@ -77,11 +85,16 @@ public final class PixelPropsUtils {
         certifiedProps = new HashMap<>(tMap);
     }
 
+    private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
+        "MODEL", "SO-52A"
+    ));
+
     private static final HashMap<String, String> buildProps = new HashMap<>(Map.of(
         "ID", build_fp.split("/", 5)[3],
         "DEVICE", build_device,
         "PRODUCT", build_device,
         "MODEL", build_model,
+        "HARDWARE", build_device,
         "FINGERPRINT", build_fp
     ));
 
@@ -131,6 +144,17 @@ public final class PixelPropsUtils {
         "com.breel.wallpapers20"
     ));
 
+    private static final HashSet<String> marlinPackagesToChange = new HashSet<>(Set.of(
+        "com.google.android.apps.photos"
+    ));
+
+    private static final HashSet<String> XP5PackagesToChange = new HashSet<>(Set.of(
+        "com.activision.callofduty.shooter",
+        "com.tencent.tmgp.kr.codm",
+        "com.garena.game.codm",
+        "com.vng.codmvn"
+    ));
+
     private static final HashSet<String> extraGMSProcToChange = new HashSet<>(Set.of(
         "com.google.android.gms.ui",
         "com.google.android.gms.learning"
@@ -156,6 +180,11 @@ public final class PixelPropsUtils {
                 return;
             }
             buildProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (marlinPackagesToChange.contains(packageName)) {
+            marlinProps.forEach(PixelPropsUtils::setPropValue);
+            commonProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (XP5PackagesToChange.contains(packageName)) {
+            XP5Props.forEach(PixelPropsUtils::setPropValue);
         } else if (packageName.startsWith("com.google.")
                 || extraPackagesToChange.contains(packageName)) {
             final boolean isInKeep = propsToKeep.containsKey(packageName);
