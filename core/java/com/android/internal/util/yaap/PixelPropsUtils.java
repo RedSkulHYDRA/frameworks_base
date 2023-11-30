@@ -41,6 +41,12 @@ public final class PixelPropsUtils {
     private static final String PROCESS_GMS_PERSISTENT = PACKAGE_GMS + ".persistent";
     private static final String VERSION_PREFIX = "VERSION.";
 
+    private static final String PACKAGE_SUBSCRIPTION_RED = "com.google.android.apps.subscriptions.red";
+    private static final String PACKAGE_TURBO = "com.google.android.apps.turbo";
+    private static final String PACKAGE_VELVET = "com.google.android.googlequicksearchbox";
+    private static final String PACKAGE_GBOARD = "com.google.android.inputmethod.latin";
+    private static final String PACKAGE_SETUPWIZARD = "com.google.android.setupwizard"; 
+
     private static final Resources mResources;
     static {
         // make sure we only use the english strings
@@ -84,6 +90,16 @@ public final class PixelPropsUtils {
         tMap.put("FINGERPRINT", cert_fp);
         certifiedProps = new HashMap<>(tMap);
     }
+
+    private static final HashMap<String, String> huskyProps = new HashMap<>(Map.of(
+        "ID", "UQ1A.231205.015",
+        "MODEL", "Pixel 8 Pro",
+        "PRODUCT", "husky",
+        "DEVICE", "husky",
+        "HARDWARE", "husky",
+        "SDK", "SDK_PROP",
+        "FINGERPRINT", "google/husky/husky:14/UQ1A.231205.015/11084887:user/release-keys"
+    ));
 
     private static final HashMap<String, String> XP5Props = new HashMap<>(Map.of(
         "MODEL", "SO-52A"
@@ -180,7 +196,13 @@ public final class PixelPropsUtils {
                 certifiedProps.forEach(PixelPropsUtils::setPropValue);
                 return;
             }
-            buildProps.forEach(PixelPropsUtils::setPropValue);
+            huskyProps.forEach(PixelPropsUtils::setPropValue);
+        } else if (packageName.equals(PACKAGE_SUBSCRIPTION_RED) || packageName.equals(PACKAGE_TURBO)
+                || packageName.equals(PACKAGE_VELVET) || packageName.equals(PACKAGE_GBOARD)
+                || packageName.equals(PACKAGE_SETUPWIZARD)) {
+                commonProps.forEach(PixelPropsUtils::setPropValue);
+                huskyProps.forEach(PixelPropsUtils::setPropValue);
+                return;
         } else if (marlinPackagesToChange.contains(packageName)) {
             marlinProps.forEach(PixelPropsUtils::setPropValue);
             commonProps.forEach(PixelPropsUtils::setPropValue);
