@@ -54,6 +54,8 @@ public class HeadsUpTile extends QSTileImpl<BooleanState> {
 
     public static final String TILE_SPEC = "heads_up";
 
+    private static final Intent NOTIFICATION_SETTINGS = new Intent("android.settings.NOTIFICATION_SETTINGS");
+
     private final CustomObserver mObserver = new CustomObserver();
 
     @Inject
@@ -87,12 +89,7 @@ public class HeadsUpTile extends QSTileImpl<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return null;
-    }
-
-    @Override
-    public void handleLongClick(@Nullable View view) {
-        // Do nothing
+        return NOTIFICATION_SETTINGS;
     }
 
     @Override
