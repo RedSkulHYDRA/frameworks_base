@@ -216,4 +216,3 @@ public class BrightnessSliderView extends LinearLayout {
         boolean onDispatchTouchEvent(MotionEvent ev);
     }
 }
-
