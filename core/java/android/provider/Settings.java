@@ -6220,13 +6220,6 @@ public final class Settings {
         public static final String SWIPE_TO_SCREENSHOT = "swipe_to_screenshot";
 
         /**
-         * Arcane Idle Manager
-         * @hide
-         */
-        @Readable
-        public static final String ARCANE_IDLE_MANAGER = "arcane_idle_manager";
-
-        /**
          * Give haptic feedback when quick settings tiles are pressed.
          * @hide
          */
