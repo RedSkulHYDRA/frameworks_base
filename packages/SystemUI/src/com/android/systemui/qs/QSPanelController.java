@@ -36,6 +36,7 @@ import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.settings.brightness.BrightnessController;
 import com.android.systemui.settings.brightness.BrightnessMirrorHandler;
 import com.android.systemui.settings.brightness.BrightnessSliderController;
+import com.android.systemui.settings.brightness.BrightnessSliderView;
 import com.android.systemui.statusbar.phone.StatusBarKeyguardViewManager;
 import com.android.systemui.statusbar.policy.BrightnessMirrorController;
 
@@ -111,6 +112,7 @@ public class QSPanelController extends QSPanelControllerBase<QSPanel> {
         updateMediaDisappearParameters();
 
         mView.setBrightnessRunnable(() -> {
+            mView.setBrightnessView(mBrightnessSliderController.getRootView());
             mView.updateResources();
             updateBrightnessMirror();
         });
