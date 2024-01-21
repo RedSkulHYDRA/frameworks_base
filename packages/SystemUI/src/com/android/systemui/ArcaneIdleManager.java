@@ -121,6 +121,7 @@ public class ArcaneIdleManager {
                 !RunningServices.get(i).pkgList[0].toString().contains("gms") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".settings") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".GoogleCamera") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".telegram") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ims")) {
                     localActivityManager.killBackgroundProcesses(RunningServices.get(i).pkgList[0].toString());
             }
